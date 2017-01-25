@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="school.thoughtworks.pos.mapper.CartMapper">
+    <resultMap id="cartMap" type="school.thoughtworks.pos.bean.Cart">
+        <id property="id" column="id"></id>
+        <result column="userId" property="userId"></result>
+    </resultMap>
+
+    <resultMap id="itemMap" type="school.thoughtworks.pos.bean.Item">
+        <id property="id" column="id"></id>
+        <result column="name" property="name"></result>
+        <result column="price" property="price"></result>
+        <result column="categoryId" property="categoryId"></result>
+    </resultMap>
+
+    <select id="getAllCarts" resultMap="cartMap">
+        select * from cart;
+    </select>
+    <select id="getCartByCartId" resultMap="cartMap">
+        select * from cart where id = #{id};
+    </select>
+
+    <insert id="insertCart" parameterType="school.thoughtworks.pos.bean.Cart" useGeneratedKeys="true" keyProperty="id">
+        insert into cart values(null,#{userId})
+    </insert>
+    <update id="updateCartById" parameterType="school.thoughtworks.pos.bean.Cart">
+        update cart set userId = #{userId} where id = #{id};
+    </update>
+
+    <delete id="deleteCartById" parameterType="java.lang.Integer">
+        delete from cart where id = #{id};
+    </delete>
+
+    <select id="getItemsByCartId" parameterType="java.lang.Integer" resultMap="itemMap">
+        select item.* from itemCart inner join item on itemCart.itemId = item.id and itemCart.cartId = #{id};
+    </select>
+
+    <insert id="insertItemCart" parameterType="java.lang.Integer">
+        insert into itemCart values(#{param1},#{param2});
+    </insert>
+
+    <delete id="deleteItemCart">
+        delete from itemCart where cartId = #{param1} and itemId = #{param2};
+    </delete>
+
+</mapper>

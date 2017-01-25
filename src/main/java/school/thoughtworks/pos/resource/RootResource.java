@@ -1,12 +1,11 @@
 package school.thoughtworks.pos.resource;
 
+import org.apache.ibatis.session.SqlSession;
 import school.thoughtworks.pos.bean.Item;
 import school.thoughtworks.pos.mapper.ItemMapper;
 
 import javax.inject.Inject;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.HashMap;
@@ -19,6 +18,9 @@ public class RootResource {
 
     @Inject
     private ItemMapper itemMapper;
+
+    @Inject
+    private SqlSession sqlSession;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -46,5 +48,79 @@ public class RootResource {
         result.put("totalCount", items.size());
 
         return Response.status(Response.Status.OK).entity(result).build();
+    }
+
+    @GET
+    @Path("/items/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getItemsById(
+            @PathParam("id") int id) {
+        Map<String, Object> result = new HashMap<>();
+
+        List<Item> originItems = itemMapper.findById(id);
+
+        List<Map> items = originItems
+                .stream()
+                .map(item -> item.toMap())
+                .collect(Collectors.toList());
+
+        result.put("items", items);
+        return Response.status(Response.Status.OK).entity(result).build();
+    }
+
+    @POST
+    @Path("/items")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response insertItems(Map data) {
+        Integer price = (Integer) data.get("price");
+        Integer categoryId = (Integer) data.get("categoryId");
+        String name = (String) data.get("name");
+
+        Item item = new Item();
+        item.setPrice(price);
+        item.setName(name);
+        item.setCategoryId(categoryId);
+
+        itemMapper.insertItem(item);
+        sqlSession.commit();
+
+        Map result = new HashMap();
+
+        result.put("itemUri", "items/" + item.getId());
+        return Response.status(Response.Status.CREATED).entity(result).build();
+
+
+    }
+
+    @PUT
+    @Path("/items/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateItems(
+            @PathParam("id") int id,
+            Map data) {
+        Integer price = (Integer) data.get("price");
+        Integer categoryId = (Integer) data.get("categoryId");
+        String name = (String) data.get("name");
+
+        Item item = new Item();
+        item.setId(id);
+        item.setName(name);
+        item.setPrice(price);
+        item.setCategoryId(categoryId);
+
+        itemMapper.updateItemById(item);
+        sqlSession.commit();
+
+        return Response.status(Response.Status.NO_CONTENT).build();
+    }
+
+    @DELETE
+    @Path("/items/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteItemById(
+            @PathParam("id") Integer id) {
+        itemMapper.deleteItemById(id);
+        sqlSession.commit();
+        return Response.status(Response.Status.NO_CONTENT).build();
     }
 }
