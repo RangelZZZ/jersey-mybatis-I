@@ -31,7 +31,7 @@ public class Category {
 
         result.put("id", getId());
         result.put("name", getName());
-        result.put("categoryUri", "categories/" + getId());
+        result.put("categoryUri", "category/" + getId());
 
         return result;
     }

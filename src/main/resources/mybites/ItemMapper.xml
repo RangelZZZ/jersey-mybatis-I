@@ -8,7 +8,6 @@
         <id property="id" column="id"></id>
         <result column="name" property="name"></result>
         <result column="price" property="price"></result>
-        <result column="categoryId" property="categoryId"></result>
     </resultMap>
 
     <select id="findAll" resultMap="itemMap">
@@ -20,11 +19,11 @@
     </select>
 
     <insert id="insertItem" parameterType="school.thoughtworks.pos.bean.Item"  useGeneratedKeys="true" keyProperty="id">
-        insert into item values(null,#{price},#{name},#{categoryId});
+        insert into item values(null,#{price},#{name});
     </insert>
 
     <update id="updateItemById" parameterType="school.thoughtworks.pos.bean.Item" useGeneratedKeys="true" keyProperty="id">
-        update item set name = #{name},price=#{price},categoryId=#{categoryId} where id = #{id};
+        update item set name = #{name},price=#{price} where id = #{id};
     </update>
 
     <delete id="deleteItemById" parameterType="java.lang.Integer">

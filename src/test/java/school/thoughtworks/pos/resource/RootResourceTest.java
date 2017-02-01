@@ -59,15 +59,15 @@ public class RootResourceTest extends JerseyTest {
     @Test
     public void should_return_items_by_id() throws Exception {
 
-        Response response = target("/items/2").request().get();
+        Response response = target("/items/4").request().get();
         assertThat(response.getStatus(), is(200));
 
         Map result = response.readEntity(Map.class);
         List items = (List) result.get("items");
         Map item = (Map) items.get(0);
-        assertThat(item.get("id"), is(2));
-        assertThat(item.get("name"), is("eeeee"));
-        assertThat(item.get("price"), is(2.0));
+        assertThat(item.get("id"), is(4));
+        assertThat(item.get("name"), is("banana"));
+        assertThat(item.get("price"), is(20.0));
 
     }
 
@@ -76,14 +76,13 @@ public class RootResourceTest extends JerseyTest {
         Map data = new HashMap();
         data.put("name", "rrrrrr");
         data.put("price", 2);
-        data.put("categoryId", 3);
 
         Response response = target("/items").request().post(
                 Entity.entity(data, MediaType.APPLICATION_JSON_TYPE));
         Assert.assertThat(response.getStatus(), is(201));
 
         Map map = response.readEntity(Map.class);
-        Assert.assertThat(map.get("itemUri"), is("items/13"));
+        Assert.assertThat(map.get("itemUri"), is("items/6"));
 
     }
 
@@ -92,10 +91,9 @@ public class RootResourceTest extends JerseyTest {
         Map item = new HashMap();
         item.put("name", "eeeee");
         item.put("price", 2);
-        item.put("id", 2);
-        item.put("categoryId", 3);
+        item.put("id", 5);
 
-        Response response = target("/items/2").request().put(
+        Response response = target("/items/5").request().put(
                 Entity.entity(item, MediaType.APPLICATION_JSON_TYPE));
         Assert.assertThat(response.getStatus(), is(204));
     }

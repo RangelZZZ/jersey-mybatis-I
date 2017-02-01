@@ -141,7 +141,7 @@ public class CartResource {
 
         cartMapper.deleteItemCart(itemId, cartId);
         sqlSession.commit();
-        return Response.status(Response.Status.CREATED).build();
+        return Response.status(Response.Status.NO_CONTENT).build();
 
     }
 

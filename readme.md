@@ -10,7 +10,8 @@
      `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
      `price` double unsigned NOT NULL DEFAULT '0',
      `name` varchar(255) DEFAULT NULL,
-     PRIMARY KEY (`id`)
+     PRIMARY KEY (`id`)，
+     categoryId int(11) unsigned NOT NULL
    ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
    # 可以在 item 中自定义两条数据
@@ -18,6 +19,7 @@
 2. 检查 ./src/main/resources/config.properties 中参数配置是否正确
 3. 在命令行中执行如下命令
    ​```bash
+
    ./gradlew jettyrun
    ```
 

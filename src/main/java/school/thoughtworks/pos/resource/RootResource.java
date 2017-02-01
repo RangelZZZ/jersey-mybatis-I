@@ -73,13 +73,11 @@ public class RootResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response insertItems(Map data) {
         Integer price = (Integer) data.get("price");
-        Integer categoryId = (Integer) data.get("categoryId");
         String name = (String) data.get("name");
 
         Item item = new Item();
         item.setPrice(price);
         item.setName(name);
-        item.setCategoryId(categoryId);
 
         itemMapper.insertItem(item);
         sqlSession.commit();
@@ -88,7 +86,6 @@ public class RootResource {
 
         result.put("itemUri", "items/" + item.getId());
         return Response.status(Response.Status.CREATED).entity(result).build();
-
 
     }
 
@@ -99,14 +96,12 @@ public class RootResource {
             @PathParam("id") int id,
             Map data) {
         Integer price = (Integer) data.get("price");
-        Integer categoryId = (Integer) data.get("categoryId");
         String name = (String) data.get("name");
 
         Item item = new Item();
         item.setId(id);
         item.setName(name);
         item.setPrice(price);
-        item.setCategoryId(categoryId);
 
         itemMapper.updateItemById(item);
         sqlSession.commit();

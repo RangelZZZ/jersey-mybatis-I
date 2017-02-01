@@ -28,7 +28,7 @@ public class Cart {
 
         result.put("id", getId());
         result.put("userId", getUserId());
-        result.put("cartUri", "carts/" + getId());
+        result.put("cartUri", "cart/" + getId());
 
         return result;
     }

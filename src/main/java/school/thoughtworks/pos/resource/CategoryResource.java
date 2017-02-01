@@ -93,8 +93,10 @@ public class CategoryResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteItemById(
             @PathParam("id") Integer id) {
+        System.out.println(id);
         categoryMapper.deleteCategoryById(id);
         sqlSession.commit();
+
         return Response.status(Response.Status.NO_CONTENT).build();
     }
 
